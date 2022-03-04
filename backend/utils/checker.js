@@ -15,7 +15,7 @@ const checker = (sentence) => {
     const response = function (res) {
       result = result.concat(res);
     };
-    hanspell.spellCheckByPNU(sentence, 10000, response, end, error);
+    hanspell.spellCheckByPNU(sentence, 60000, response, end, error);
   });
 };
 
