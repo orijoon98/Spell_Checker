@@ -10,22 +10,56 @@ const Home = ({
   onChange,
   onFinish,
   onText,
+  onXButton,
   typos,
   tokens,
   result,
+  corrections,
+  index,
+  modal,
+  modalDetail,
 }) => {
   const spellCheck = () => {
     const res = [];
     for (let i = 0; i < result.length; i++) {
       if (tokens.has(result[i])) {
         res.push(
-          <span key={i} name={result[i]} css={TextButton} onClick={onText}>
+          <span
+            key={i}
+            id={i}
+            name={result[i]}
+            css={TextButton}
+            onClick={onText}
+          >
             {result[i]}
           </span>
         );
       } else {
-        res.push(<span key={i}>{result[i]}</span>);
+        res.push(
+          <span key={i} id={i}>
+            {result[i]}
+          </span>
+        );
       }
+    }
+    return res;
+  };
+
+  const substitutes = () => {
+    const res = [];
+    let suggestions = modalDetail[1];
+    for (let i = 0; i < suggestions.length; i++) {
+      res.push(
+        <span
+          key={i}
+          id={i}
+          name={suggestions[i]}
+          css={BlueText}
+          onClick={onText}
+        >
+          {suggestions[i]}
+        </span>
+      );
     }
     return res;
   };
@@ -41,6 +75,23 @@ const Home = ({
           <ButtonContainer>
             <FinishButton onClick={onFinish}>검사 종료하기</FinishButton>
           </ButtonContainer>
+          {modal ? (
+            <Modal>
+              <button onClick={onXButton}>x</button>
+              <div>
+                틀린 단어 <span css={RedText}>{modalDetail[0]}</span>
+              </div>
+              <div>대체어 {substitutes()}</div>
+              <div>
+                직접 입력 <input type="text" />
+              </div>
+              <div>
+                도움말 보기 <span>{modalDetail[2]}</span>
+              </div>
+            </Modal>
+          ) : (
+            <></>
+          )}
         </>
       ) : (
         <>
@@ -109,6 +160,26 @@ const TextButton = css`
   &:hover {
     cursor: pointer;
   }
+`;
+
+const RedText = css`
+  color: red;
+  text-decoration: underline;
+`;
+
+const BlueText = css`
+  color: blue;
+`;
+
+const Modal = styled.div`
+  position: absolute;
+  background-color: white;
+  border: 1px solid black;
+  z-index: 100;
+  width: 50%;
+  height: 30%;
+  left: 25%;
+  top: 30%;
 `;
 
 export default Home;

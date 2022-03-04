@@ -13,6 +13,10 @@ const HomeContainer = () => {
   const [typos, setTypos] = useState(0);
   const [result, setResult] = useState([]);
   const [tokens, setTokens] = useState(new Set());
+  const [corrections, setCorrections] = useState([]);
+  const [index, setIndex] = useState(0);
+  const [modal, setModal] = useState(false);
+  const [modalDetail, setModalDetail] = useState(['', [], '']);
 
   const onChange = (e) => {
     const {
@@ -32,21 +36,20 @@ const HomeContainer = () => {
       setTypos(res.length);
 
       const tokens = new Set();
-      const corrections = new Map();
+      const corrections = [];
 
       for (let i = 0; i < res.length; i++) {
         tokens.add(res[i]['token']);
-        const correction = {
-          suggestions: res[i]['suggestions'],
-          info: res[i]['info'],
-        };
-        corrections.set(res[i]['token'], correction);
+        const correction = [
+          res[i]['token'],
+          res[i]['suggestions'],
+          res[i]['info'],
+        ];
+        corrections[i] = correction;
       }
 
       setTokens(tokens);
-
-      console.log(tokens);
-      console.log(corrections);
+      setCorrections(corrections);
 
       let tmp = form.sentence;
 
@@ -77,7 +80,27 @@ const HomeContainer = () => {
 
   const onText = async (e) => {
     e.preventDefault();
-    console.log(e.target.getAttribute('name'));
+    const name = e.target.getAttribute('name');
+    let id = 0;
+    for (let i = 0; i < corrections.length; i++) {
+      if (name === corrections[i][0]) {
+        id = i;
+        break;
+      }
+    }
+    // 모달창 띄우고 나서 글 수정하는 부분
+    // const textIndex = Number(e.target.getAttribute('id'));
+    // let tmp = result;
+    // tmp[id] = 'test';
+    // setResult([...tmp]);
+    // setIndex(textIndex);
+    setModalDetail(corrections[id]);
+    setModal(true);
+  };
+
+  const onXButton = async (e) => {
+    e.preventDefault();
+    setModal(false);
   };
 
   const replaceAt = (string, index, replacement) => {
@@ -97,9 +120,14 @@ const HomeContainer = () => {
       onChange={onChange}
       onFinish={onFinish}
       onText={onText}
+      onXButton={onXButton}
       typos={typos}
       tokens={tokens}
       result={result}
+      corrections={corrections}
+      index={index}
+      modal={modal}
+      modalDetail={modalDetail}
     />
   );
 };
