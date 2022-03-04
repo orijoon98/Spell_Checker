@@ -1,6 +1,9 @@
+import axios from 'axios';
 import { Route, Routes } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import HomePage from './pages/HomePage';
+
+axios.defaults.withCredentials = true;
 
 const GlobalStyle = createGlobalStyle`
   * {
