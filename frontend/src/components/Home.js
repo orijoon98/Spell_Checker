@@ -1,19 +1,47 @@
-import React from 'react';
+/** @jsxImportSource @emotion/react */
 import styled from 'styled-components';
+import { css } from '@emotion/react';
 
-const Home = ({ form, loading, checked, onCheck, onChange, onFinish }) => {
+const Home = ({
+  form,
+  loading,
+  checked,
+  onCheck,
+  onChange,
+  onFinish,
+  onText,
+  typos,
+  tokens,
+  result,
+}) => {
+  const spellCheck = () => {
+    const res = [];
+    for (let i = 0; i < result.length; i++) {
+      if (tokens.has(result[i])) {
+        res.push(
+          <span key={i} name={result[i]} css={TextButton} onClick={onText}>
+            {result[i]}
+          </span>
+        );
+      } else {
+        res.push(<span key={i}>{result[i]}</span>);
+      }
+    }
+    return res;
+  };
+
   return (
     <Container>
       <Title>맞춤법 검사</Title>
+
       {checked ? (
-        <TextAreaContainer>
-          <>
-            <TextAreaContainer>맞춤법 검사 완료</TextAreaContainer>
-            <ButtonContainer>
-              <FinishButton onClick={onFinish}>검사 종료하기</FinishButton>
-            </ButtonContainer>
-          </>
-        </TextAreaContainer>
+        <>
+          <TextAreaContainer>{spellCheck()}</TextAreaContainer>
+          <div>오타 의심 단어 {typos}개</div>
+          <ButtonContainer>
+            <FinishButton onClick={onFinish}>검사 종료하기</FinishButton>
+          </ButtonContainer>
+        </>
       ) : (
         <>
           <TextAreaContainer>
@@ -28,7 +56,9 @@ const Home = ({ form, loading, checked, onCheck, onChange, onFinish }) => {
             )}
           </TextAreaContainer>
           <ButtonContainer>
-            <CheckButton onClick={onCheck}>맞춤법 검사하기</CheckButton>
+            <CheckButton onClick={onCheck} disabled={loading}>
+              맞춤법 검사하기
+            </CheckButton>
           </ButtonContainer>
         </>
       )}
@@ -71,6 +101,14 @@ const CheckButton = styled.button`
 const FinishButton = styled.button`
   width: 200px;
   height: 100px;
+`;
+
+const TextButton = css`
+  color: red;
+  text-decoration: underline;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export default Home;
