@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const logger = require('./logger');
+const logger = require('./config/logger');
 
 const spell = require('./routes/spell');
 

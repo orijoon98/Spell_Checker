@@ -1,5 +1,5 @@
 const hanspell = require('hanspell');
-const logger = require('./logger');
+const logger = require('../config/logger');
 
 const checker = (sentence) => {
   return new Promise((resolve, reject) => {

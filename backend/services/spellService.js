@@ -1,4 +1,4 @@
-const checker = require('../checker');
+const checker = require('../utils/checker');
 
 exports.check = async (req) => {
   try {
