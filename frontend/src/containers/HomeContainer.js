@@ -77,6 +77,7 @@ const HomeContainer = () => {
   const onFinish = async (e) => {
     e.preventDefault();
 
+    setFixed(new Set());
     setChecked(false);
   };
 
@@ -151,8 +152,6 @@ const HomeContainer = () => {
       typos={typos}
       tokens={tokens}
       result={result}
-      corrections={corrections}
-      index={index}
       modal={modal}
       modalDetail={modalDetail}
       fixed={fixed}

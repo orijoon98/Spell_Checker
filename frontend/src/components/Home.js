@@ -17,8 +17,6 @@ const Home = ({
   typos,
   tokens,
   result,
-  corrections,
-  index,
   modal,
   modalDetail,
   fixed,
