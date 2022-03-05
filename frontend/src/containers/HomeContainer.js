@@ -17,6 +17,8 @@ const HomeContainer = () => {
   const [index, setIndex] = useState(0);
   const [modal, setModal] = useState(false);
   const [modalDetail, setModalDetail] = useState(['', [], '']);
+  const [fixed, setFixed] = useState(new Set());
+  const [direct, setDirect] = useState('');
 
   const onChange = (e) => {
     const {
@@ -88,12 +90,8 @@ const HomeContainer = () => {
         break;
       }
     }
-    // 모달창 띄우고 나서 글 수정하는 부분
-    // const textIndex = Number(e.target.getAttribute('id'));
-    // let tmp = result;
-    // tmp[id] = 'test';
-    // setResult([...tmp]);
-    // setIndex(textIndex);
+    const textIndex = Number(e.target.getAttribute('id'));
+    setIndex(textIndex);
     setModalDetail(corrections[id]);
     setModal(true);
   };
@@ -101,6 +99,21 @@ const HomeContainer = () => {
   const onXButton = async (e) => {
     e.preventDefault();
     setModal(false);
+  };
+
+  const onDirectChange = (e) => {
+    setDirect(e.target.value);
+  };
+
+  const onDirectClick = async (e) => {
+    e.preventDefault();
+    let tmp = result;
+    tmp[index] = direct;
+    let tmpSet = fixed;
+    tmpSet.add(index);
+    setFixed(tmpSet);
+    setModal(false);
+    setResult([...tmp]);
   };
 
   const replaceAt = (string, index, replacement) => {
@@ -121,6 +134,8 @@ const HomeContainer = () => {
       onFinish={onFinish}
       onText={onText}
       onXButton={onXButton}
+      onDirectChange={onDirectChange}
+      onDirectClick={onDirectClick}
       typos={typos}
       tokens={tokens}
       result={result}
@@ -128,6 +143,7 @@ const HomeContainer = () => {
       index={index}
       modal={modal}
       modalDetail={modalDetail}
+      fixed={fixed}
     />
   );
 };

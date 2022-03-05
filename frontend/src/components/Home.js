@@ -11,6 +11,8 @@ const Home = ({
   onFinish,
   onText,
   onXButton,
+  onDirectChange,
+  onDirectClick,
   typos,
   tokens,
   result,
@@ -18,11 +20,18 @@ const Home = ({
   index,
   modal,
   modalDetail,
+  fixed,
 }) => {
   const spellCheck = () => {
     const res = [];
     for (let i = 0; i < result.length; i++) {
-      if (tokens.has(result[i])) {
+      if (fixed.has(i)) {
+        res.push(
+          <span key={i} id={i} name={result[i]} css={BlueText}>
+            {result[i]}
+          </span>
+        );
+      } else if (tokens.has(result[i])) {
         res.push(
           <span
             key={i}
@@ -50,15 +59,12 @@ const Home = ({
     let suggestions = modalDetail[1];
     for (let i = 0; i < suggestions.length; i++) {
       res.push(
-        <span
-          key={i}
-          id={i}
-          name={suggestions[i]}
-          css={BlueText}
-          onClick={onText}
-        >
-          {suggestions[i]}
-        </span>
+        <div key={i}>
+          <span key={i} id={i} name={suggestions[i]} css={BlueText}>
+            {suggestions[i]}
+          </span>
+          <button>적용</button>
+        </div>
       );
     }
     return res;
@@ -83,7 +89,8 @@ const Home = ({
               </div>
               <div>대체어 {substitutes()}</div>
               <div>
-                직접 입력 <input type="text" />
+                직접 입력 <input type="text" onChange={onDirectChange} />
+                <button onClick={onDirectClick}>적용</button>
               </div>
               <div>
                 도움말 보기 <span>{modalDetail[2]}</span>
