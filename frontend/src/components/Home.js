@@ -13,6 +13,7 @@ const Home = ({
   onXButton,
   onDirectChange,
   onDirectClick,
+  onSuggestionClick,
   typos,
   tokens,
   result,
@@ -63,7 +64,7 @@ const Home = ({
           <span key={i} id={i} name={suggestions[i]} css={BlueText}>
             {suggestions[i]}
           </span>
-          <button>적용</button>
+          <button onClick={onSuggestionClick}>적용</button>
         </div>
       );
     }

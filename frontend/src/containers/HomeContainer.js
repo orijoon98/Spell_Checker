@@ -116,6 +116,17 @@ const HomeContainer = () => {
     setResult([...tmp]);
   };
 
+  const onSuggestionClick = async (e) => {
+    e.preventDefault();
+    let tmp = result;
+    tmp[index] = e.target.parentElement.firstChild.getAttribute('name');
+    let tmpSet = fixed;
+    tmpSet.add(index);
+    setFixed(tmpSet);
+    setModal(false);
+    setResult([...tmp]);
+  };
+
   const replaceAt = (string, index, replacement) => {
     return (
       string.substr(0, index) +
@@ -136,6 +147,7 @@ const HomeContainer = () => {
       onXButton={onXButton}
       onDirectChange={onDirectChange}
       onDirectClick={onDirectClick}
+      onSuggestionClick={onSuggestionClick}
       typos={typos}
       tokens={tokens}
       result={result}
