@@ -1,10 +1,12 @@
 const winston = require('winston');
+const uuid = require('uuid');
 
 const format = winston.format.combine(
-  winston.format.timestamp({ format: ' YYYY-MM-DD HH:MM:SS ||' }),
+  winston.format.timestamp({ format: 'YYYY-MM-DD HH:MM:SS' }),
   winston.format.colorize({ all: true }),
   winston.format.printf(
-    (info) => `${info.timestamp} [ ${info.level} ] ▶ ${info.message}`
+    (info) =>
+      `[${info.level}][${uuid.v1()}][${info.timestamp}] ▶ ${info.message}`
   )
 );
 
