@@ -21,6 +21,8 @@ const Home = ({
   modal,
   modalDetail,
   fixed,
+  blankO,
+  blankX,
 }) => {
   const spellCheck = () => {
     const res = [];
@@ -80,7 +82,11 @@ const Home = ({
 
       {checked ? (
         <>
-          <TextAreaContainer>
+          <div>
+            공백포함: 총 <span css={BlueText}>{blankO}</span>자 | 공백제외: 총{' '}
+            <span css={BlueText}>{blankX}</span>자
+          </div>
+          <TextAreaContainer name="textArea">
             <button onClick={onCopy}>복사</button>
             {spellCheck()}
           </TextAreaContainer>
@@ -109,6 +115,10 @@ const Home = ({
         </>
       ) : (
         <>
+          <div>
+            공백포함: 총 <span css={BlueText}>{blankO}</span>자 | 공백제외: 총{' '}
+            <span css={BlueText}>{blankX}</span>자
+          </div>
           <TextAreaContainer>
             {loading ? (
               <Loading>맞춤법 검사중입니다.</Loading>

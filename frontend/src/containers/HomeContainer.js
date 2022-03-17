@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { spellCheck } from '../api/check';
 import Home from '../components/Home';
 
@@ -19,6 +19,8 @@ const HomeContainer = () => {
   const [modalDetail, setModalDetail] = useState(['', [], '']);
   const [fixed, setFixed] = useState(new Set());
   const [direct, setDirect] = useState('');
+  const [blankO, setBlankO] = useState(0);
+  const [blankX, setBlankX] = useState(0);
 
   const onChange = (e) => {
     const {
@@ -163,6 +165,30 @@ const HomeContainer = () => {
     );
   };
 
+  useEffect(() => {
+    let tmp = form['sentence'];
+    tmp = tmp.replace(/(\s*)/g, '');
+    setBlankO(form['sentence'].length);
+    setBlankX(tmp.length);
+  }, [form, checked]);
+
+  useEffect(() => {
+    let text = '';
+    let textArea = document.getElementsByName('textArea');
+    let list;
+    if (textArea[0]) {
+      list = textArea[0].childNodes;
+      for (let i = 0; i < list.length; i++) {
+        if (list[i].getAttribute('name') == null) continue;
+        text += list[i].getAttribute('name');
+      }
+      let tmp = text;
+      tmp = tmp.replace(/(\s*)/g, '');
+      setBlankO(text.length);
+      setBlankX(tmp.length);
+    }
+  }, [result]);
+
   return (
     <Home
       form={form}
@@ -183,6 +209,8 @@ const HomeContainer = () => {
       modal={modal}
       modalDetail={modalDetail}
       fixed={fixed}
+      blankO={blankO}
+      blankX={blankX}
     />
   );
 };
