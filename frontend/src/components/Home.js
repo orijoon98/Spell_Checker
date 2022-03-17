@@ -45,7 +45,7 @@ const Home = ({
       } else {
         res.push(
           <span key={i} id={i}>
-            {result[i]}
+            {result[i] === '<LineChange>' ? <br /> : result[i]}
           </span>
         );
       }

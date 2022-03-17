@@ -55,10 +55,16 @@ const HomeContainer = () => {
 
       let tmp = form.sentence;
 
+      let line = tmp.indexOf('\n');
+      while (line !== -1) {
+        tmp = replaceAt(tmp, line, '*****<LineChange>*****', 21);
+        line = tmp.indexOf('\n');
+      }
+
       for (let item of tokens) {
         let index = tmp.indexOf(item);
         while (index !== -1) {
-          tmp = replaceAt(tmp, index, '*****' + item + '*****');
+          tmp = replaceAt(tmp, index, '*****' + item + '*****', 10);
           index = tmp.indexOf(item, index + 10);
         }
       }
@@ -128,11 +134,11 @@ const HomeContainer = () => {
     setResult([...tmp]);
   };
 
-  const replaceAt = (string, index, replacement) => {
+  const replaceAt = (string, index, replacement, len) => {
     return (
       string.substr(0, index) +
       replacement +
-      string.substr(index + replacement.length - 10)
+      string.substr(index + replacement.length - len)
     );
   };
 
