@@ -14,6 +14,7 @@ const Home = ({
   onDirectChange,
   onDirectClick,
   onSuggestionClick,
+  onCopy,
   typos,
   tokens,
   result,
@@ -44,7 +45,11 @@ const Home = ({
         );
       } else {
         res.push(
-          <span key={i} id={i}>
+          <span
+            key={i}
+            id={i}
+            name={result[i] === '<LineChange>' ? '\n' : result[i]}
+          >
             {result[i] === '<LineChange>' ? <br /> : result[i]}
           </span>
         );
@@ -75,7 +80,10 @@ const Home = ({
 
       {checked ? (
         <>
-          <TextAreaContainer>{spellCheck()}</TextAreaContainer>
+          <TextAreaContainer>
+            <button onClick={onCopy}>복사</button>
+            {spellCheck()}
+          </TextAreaContainer>
           <div>오타 의심 단어 {typos}개</div>
           <ButtonContainer>
             <FinishButton onClick={onFinish}>검사 종료하기</FinishButton>

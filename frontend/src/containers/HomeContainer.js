@@ -144,6 +144,17 @@ const HomeContainer = () => {
     setResult([...tmp]);
   };
 
+  const onCopy = async (e) => {
+    e.preventDefault();
+    let text = '';
+    let list = e.target.parentElement.childNodes;
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].getAttribute('name') == null) continue;
+      text += list[i].getAttribute('name');
+    }
+    navigator.clipboard.writeText(text);
+  };
+
   const replaceAt = (string, index, replacement, len) => {
     return (
       string.substr(0, index) +
@@ -165,6 +176,7 @@ const HomeContainer = () => {
       onDirectChange={onDirectChange}
       onDirectClick={onDirectClick}
       onSuggestionClick={onSuggestionClick}
+      onCopy={onCopy}
       typos={typos}
       tokens={tokens}
       result={result}
