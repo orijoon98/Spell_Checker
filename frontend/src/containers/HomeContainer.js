@@ -14,7 +14,7 @@ const HomeContainer = () => {
   const [result, setResult] = useState([]);
   const [tokens, setTokens] = useState(new Set());
   const [corrections, setCorrections] = useState([]);
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState([]);
   const [modal, setModal] = useState(false);
   const [modalDetail, setModalDetail] = useState(['', [], '']);
   const [fixed, setFixed] = useState(new Set());
@@ -89,6 +89,7 @@ const HomeContainer = () => {
 
   const onText = async (e) => {
     e.preventDefault();
+    let list = e.target.parentElement.childNodes;
     const name = e.target.getAttribute('name');
     let id = 0;
     for (let i = 0; i < corrections.length; i++) {
@@ -97,8 +98,13 @@ const HomeContainer = () => {
         break;
       }
     }
-    const textIndex = Number(e.target.getAttribute('id'));
-    setIndex(textIndex);
+    let indexList = [];
+    for (let i = 0; i < list.length; i++) {
+      if (name === list[i].getAttribute('name')) {
+        indexList.push(Number(list[i].getAttribute('id')));
+      }
+    }
+    setIndex(indexList);
     setModalDetail(corrections[id]);
     setModal(true);
   };
@@ -115,9 +121,11 @@ const HomeContainer = () => {
   const onDirectClick = async (e) => {
     e.preventDefault();
     let tmp = result;
-    tmp[index] = direct;
     let tmpSet = fixed;
-    tmpSet.add(index);
+    for (let i = 0; i < index.length; i++) {
+      tmp[index[i]] = direct;
+      tmpSet.add(index[i]);
+    }
     setFixed(tmpSet);
     setModal(false);
     setResult([...tmp]);
@@ -126,9 +134,11 @@ const HomeContainer = () => {
   const onSuggestionClick = async (e) => {
     e.preventDefault();
     let tmp = result;
-    tmp[index] = e.target.parentElement.firstChild.getAttribute('name');
     let tmpSet = fixed;
-    tmpSet.add(index);
+    for (let i = 0; i < index.length; i++) {
+      tmp[index[i]] = e.target.parentElement.firstChild.getAttribute('name');
+      tmpSet.add(index[i]);
+    }
     setFixed(tmpSet);
     setModal(false);
     setResult([...tmp]);
