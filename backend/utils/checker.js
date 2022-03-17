@@ -3,19 +3,34 @@ const logger = require('../config/logger');
 
 const checker = (sentence) => {
   return new Promise((resolve, reject) => {
-    var result = [];
+    let result = [];
+    let flag = false;
+    let msg;
+    let retry = 0;
     const end = function () {
-      logger.info('spell checked');
-      resolve(result);
+      if (flag) {
+        retry++;
+        if (retry < 3) {
+          logger.warn('spell check retried');
+          flag = false;
+          hanspell.spellCheckByPNU(sentence, 20000, response, end, error);
+        } else {
+          logger.error(msg);
+          reject(msg);
+        }
+      } else {
+        logger.info('spell checked');
+        resolve(result);
+      }
     };
     const error = function (err) {
-      logger.error(err);
-      reject(err);
+      flag = true;
+      msg = err;
     };
     const response = function (res) {
       result = result.concat(res);
     };
-    hanspell.spellCheckByPNU(sentence, 60000, response, end, error);
+    hanspell.spellCheckByPNU(sentence, 20000, response, end, error);
   });
 };
 
